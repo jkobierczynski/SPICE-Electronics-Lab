@@ -3,6 +3,10 @@
 An electronics bench in a single web page. Draw a circuit, drive it with a signal generator, probe any
 node voltage or part current on an oscilloscope, and read or write SPICE netlists.
 
+**Live demo:** <https://jurgenkobierczynski.com/SPICE_Electronics_Lab/SPICE_Electronics_Lab.html>
+
+## Screenshot
+
 ![SPICE Electronics Lab](SPICE_Electronics_Lab.jpg)
 
 There is nothing to install or build. Open `SPICE_Electronics_Lab.html` in a browser, or put the file on
