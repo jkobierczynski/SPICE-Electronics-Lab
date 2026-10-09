@@ -55,6 +55,20 @@ over the simulated time span.
   subcircuit of standard parts. In SPICE files `M` means milli and `MEG` means mega; the lab reads and
   writes files that way, while its own value fields treat a capital `M` as mega.
 
+## Example labs
+
+The Example menu holds 42 ready-made circuits, each with probes already placed:
+
+- **First steps:** RC low-pass filter; Voltage divider; RC high-pass (differentiator); RL circuit: current build-up; Superposition of two sources.
+- **Signals:** Signal shapes: sine, square, triangle, sawtooth; Signal shapes: pulse, exponential, FM, noise; Beats from two close frequencies; Ideal amplifier from a controlled source.
+- **Resonance and filters:** Series RLC step response; LC tank ringing down; RLC band-pass with a frequency sweep; Noise through a low-pass filter; PWM smoothed by an LC filter; Sallen-Key low-pass filter.
+- **Diodes:** Bridge rectifier with smoothing; AM envelope detector; Half-wave rectifier; Zener voltage regulator; Diode clipper; Diode clamper (DC restorer); Voltage doubler; LED and series resistor.
+- **Transistors:** Common-emitter amplifier; Emitter follower; Transistor switch driving an LED; Current mirror; Differential pair; Push-pull output stage (crossover distortion); Astable multivibrator; CMOS inverter.
+- **Op-amps:** Op-amp inverting amplifier; Op-amp relaxation oscillator; Op-amp non-inverting amplifier; Op-amp summing amplifier (mixer); Op-amp integrator; Schmitt trigger; Precision rectifier; Wien bridge oscillator.
+- **Power and switching:** MOSFET switch with inductive load; Buck converter (step-down); Boost converter (step-up).
+
+Every example is an ordinary circuit: edit it, re-probe it, or export it as a netlist.
+
 ## Keyboard
 
 | Key | Action |
