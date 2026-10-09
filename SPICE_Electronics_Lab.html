@@ -8,6 +8,8 @@
 <!--
   SPICE Electronics Lab
   Copyright (C) 2026 Jurgen Kobierczynski
+  Designed and written with Claude Opus 5.5 Medium (Anthropic).
+  Live demo: https://jurgenkobierczynski.com/SPICE_Electronics_Lab/SPICE_Electronics_Lab.html
 
   This program is free software: you can redistribute it and/or modify it under the terms of the
   GNU General Public License as published by the Free Software Foundation, version 3.
@@ -57,6 +59,14 @@
   --ch1: #f5d547; --ch2: #4dd4ec; --ch3: #f472d0; --ch4: #6fe38a; --ch5: #ff9f5a; --ch6: #a5a0ff; --ch7: #ff7a90; --ch8: #c5d0da;
   color-scheme: dark;
 }
+/* Named themes chosen in the page. They come after the system light/dark rules, so a choice here wins. */
+:root[data-lab-theme="light"] { --bg: #e6ebf0; --panel: #f6f8fa; --panel-2: #ecf0f4; --paper: #fbfcfd; --ink: #17232e; --ink-2: #4f6071; --ink-3: #8192a1; --line: #cbd4dc; --grid: #bcc7d2; --wire: #1c3852; --sym-fill: #ffffff; --accent: #0b7285; --accent-ink: #ffffff; --accent-soft: rgba(11, 114, 133, .16); --warn: #b45309; --bad: #b42318; --screen: #f3f6f8; --grat: #d5dde4; --grat-2: #9fadba; --ch1: #a16207; --ch2: #0e7490; --ch3: #a21caf; --ch4: #15803d; --ch5: #c2410c; --ch6: #4338ca; --ch7: #be123c; --ch8: #475569; color-scheme: light; }
+:root[data-lab-theme="dark"] { --bg: #0d1318; --panel: #151d24; --panel-2: #1b252e; --paper: #111920; --ink: #dde6ee; --ink-2: #9aabba; --ink-3: #6b7c8b; --line: #2a3742; --grid: #2f3e4b; --wire: #b7d0e4; --sym-fill: #18232c; --accent: #3cc4d6; --accent-ink: #06222a; --accent-soft: rgba(60, 196, 214, .2); --warn: #fb923c; --bad: #f87171; --screen: #0a1015; --grat: #1d2933; --grat-2: #3a4d5e; --ch1: #f5d547; --ch2: #4dd4ec; --ch3: #f472d0; --ch4: #6fe38a; --ch5: #ff9f5a; --ch6: #a5a0ff; --ch7: #ff7a90; --ch8: #c5d0da; color-scheme: dark; }
+:root[data-lab-theme="solarized-light"] { --bg: #eee8d5; --panel: #fdf6e3; --panel-2: #eee8d5; --paper: #fdf6e3; --ink: #073642; --ink-2: #586e75; --ink-3: #93a1a1; --line: #d6cfb9; --grid: #c9c2ab; --wire: #073642; --sym-fill: #fdf6e3; --accent: #268bd2; --accent-ink: #fdf6e3; --accent-soft: rgba(38, 139, 210, .18); --warn: #cb4b16; --bad: #dc322f; --screen: #fdf6e3; --grat: #e7e0ca; --grat-2: #b3ad97; --ch1: #b58900; --ch2: #2aa198; --ch3: #d33682; --ch4: #859900; --ch5: #cb4b16; --ch6: #6c71c4; --ch7: #dc322f; --ch8: #586e75; color-scheme: light; }
+:root[data-lab-theme="solarized-dark"] { --bg: #002b36; --panel: #073642; --panel-2: #0a4352; --paper: #002b36; --ink: #eee8d5; --ink-2: #93a1a1; --ink-3: #657b83; --line: #124d5c; --grid: #17505f; --wire: #93a1a1; --sym-fill: #073642; --accent: #268bd2; --accent-ink: #fdf6e3; --accent-soft: rgba(38, 139, 210, .26); --warn: #cb4b16; --bad: #dc322f; --screen: #00212b; --grat: #0b3a46; --grat-2: #2b5c69; --ch1: #b58900; --ch2: #2aa198; --ch3: #d33682; --ch4: #859900; --ch5: #cb4b16; --ch6: #6c71c4; --ch7: #dc322f; --ch8: #93a1a1; color-scheme: dark; }
+:root[data-lab-theme="nord"] { --bg: #2e3440; --panel: #3b4252; --panel-2: #434c5e; --paper: #2e3440; --ink: #eceff4; --ink-2: #c0c8d6; --ink-3: #8490a7; --line: #4c566a; --grid: #4c566a; --wire: #d8dee9; --sym-fill: #3b4252; --accent: #88c0d0; --accent-ink: #2e3440; --accent-soft: rgba(136, 192, 208, .22); --warn: #d08770; --bad: #d9818b; --screen: #272c36; --grat: #3b4252; --grat-2: #5c677c; --ch1: #ebcb8b; --ch2: #88c0d0; --ch3: #b48ead; --ch4: #a3be8c; --ch5: #d08770; --ch6: #81a1c1; --ch7: #bf616a; --ch8: #d8dee9; color-scheme: dark; }
+:root[data-lab-theme="catppuccin-latte"] { --bg: #dce0e8; --panel: #eff1f5; --panel-2: #e6e9ef; --paper: #eff1f5; --ink: #4c4f69; --ink-2: #5c5f77; --ink-3: #8c8fa1; --line: #bcc0cc; --grid: #acb0be; --wire: #4c4f69; --sym-fill: #ffffff; --accent: #8839ef; --accent-ink: #eff1f5; --accent-soft: rgba(136, 57, 239, .15); --warn: #d05a08; --bad: #d20f39; --screen: #e6e9ef; --grat: #ccd0da; --grat-2: #9ca0b0; --ch1: #df8e1d; --ch2: #209fb5; --ch3: #ea76cb; --ch4: #40a02b; --ch5: #fe640b; --ch6: #1e66f5; --ch7: #d20f39; --ch8: #6c6f85; color-scheme: light; }
+:root[data-lab-theme="catppuccin-mocha"] { --bg: #11111b; --panel: #1e1e2e; --panel-2: #313244; --paper: #181825; --ink: #cdd6f4; --ink-2: #a6adc8; --ink-3: #7f849c; --line: #45475a; --grid: #45475a; --wire: #bac2de; --sym-fill: #1e1e2e; --accent: #cba6f7; --accent-ink: #1e1e2e; --accent-soft: rgba(203, 166, 247, .22); --warn: #fab387; --bad: #f38ba8; --screen: #11111b; --grat: #313244; --grat-2: #585b70; --ch1: #f9e2af; --ch2: #89dceb; --ch3: #f5c2e7; --ch4: #a6e3a1; --ch5: #fab387; --ch6: #89b4fa; --ch7: #f38ba8; --ch8: #bac2de; color-scheme: dark; }
 * { box-sizing: border-box; }
 html, body { height: 100%; }
 body { background: var(--bg); color: var(--ink); font: 400 14px/1.4 var(--ui); overflow: hidden; }
@@ -241,6 +251,17 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
       <button class="btn" id="btnExport" type="button">Export SPICE</button>
     </div>
     <div class="group end">
+      <label class="cap" for="themeSel">Theme</label>
+      <select id="themeSel" aria-label="Colour theme">
+        <option value="">Auto</option>
+        <option value="light">Lab Light</option>
+        <option value="dark">Lab Dark</option>
+        <option value="solarized-light">Solarized Light</option>
+        <option value="solarized-dark">Solarized Dark</option>
+        <option value="nord">Nord</option>
+        <option value="catppuccin-latte">Catppuccin Latte</option>
+        <option value="catppuccin-mocha">Catppuccin Mocha</option>
+      </select>
       <button class="btn" id="btnUndo" type="button" title="Undo (Ctrl+Z)">Undo</button>
       <button class="btn" id="btnRedo" type="button" title="Redo (Ctrl+Y)">Redo</button>
       <button class="btn" id="btnHelp" type="button">Help</button>
@@ -353,7 +374,7 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
         <li><b>Written:</b> square, triangle and sawtooth become PULSE; noise becomes PWL; the op-amp becomes a small subcircuit of standard parts. The AM source exists in ngspice but not in LTspice.</li>
       </ul>
     </div>
-    <div class="row"><span class="note">Copyright &copy; 2026 Jurgen Kobierczynski. Free software under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>. It comes with no warranty.</span><span class="sp"></span><button class="btn go" type="button" id="helpClose">Close</button></div>
+    <div class="row"><span class="note">Copyright &copy; 2026 Jurgen Kobierczynski. Free software under the <a href="https://www.gnu.org/licenses/gpl-3.0.html">GNU General Public License, version 3</a>. It comes with no warranty. Written with Claude Opus 5.5 Medium. <a href="https://jurgenkobierczynski.com/SPICE_Electronics_Lab/SPICE_Electronics_Lab.html">Live demo</a>.</span><span class="sp"></span><button class="btn go" type="button" id="helpClose">Close</button></div>
   </div>
 </dialog>
 <script>
@@ -3219,6 +3240,23 @@ if (window.ResizeObserver) new ResizeObserver(onResize).observe($('screen'));
 if (window.matchMedia) { const mq = window.matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', onResize); }
 if (window.MutationObserver) new MutationObserver(onResize).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
+
+(function themes() {
+  const KEY = DRAFT + '-theme', box = $('themeSel');
+  const apply = function (v) {
+    if (v) document.documentElement.setAttribute('data-lab-theme', v); else document.documentElement.removeAttribute('data-lab-theme');
+    onResize();
+  };
+  let v = '';
+  try { v = localStorage.getItem(KEY) || ''; } catch (e) { v = ''; }
+  if (!Array.prototype.some.call(box.options, function (o) { return o.value === v; })) v = '';
+  box.value = v;
+  apply(v);
+  box.addEventListener('change', function () {
+    apply(box.value);
+    try { localStorage.setItem(KEY, box.value); } catch (e) { /* optional */ }
+  });
+})();
 
 /* ------------------------------------------------------------------ start */
 

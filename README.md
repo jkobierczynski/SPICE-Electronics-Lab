@@ -22,6 +22,8 @@ any web server. Everything runs in the browser; no data leaves the page.
 - Place parts from the rack, drag from a pin to wire, drag parts to move them (wires follow), rotate,
   mirror, duplicate, undo and redo. Pan by dragging the sheet, zoom with the wheel.
 - Values accept engineering notation: `4.7k`, `100n`, `2.2u`, `1M`, `1meg`.
+- Themes: follows the system light or dark setting, or pick Lab Light, Lab Dark, Solarized Light,
+  Solarized Dark, Nord, Catppuccin Latte or Catppuccin Mocha. The choice is remembered in the browser.
 
 **Signal generator**
 
@@ -113,4 +115,6 @@ General Public License as published by the Free Software Foundation, version 3. 
 the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See [LICENSE](LICENSE) for the full text.
 
-Developed with Claude (Anthropic).
+## Attribution
+
+Designed and written with Claude Opus 5.5 Medium (Anthropic), directed by Jurgen Kobierczynski.
