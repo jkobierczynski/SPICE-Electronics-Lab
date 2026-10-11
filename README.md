@@ -69,10 +69,14 @@ over the simulated time span.
 
 ## Example labs
 
-The Example menu holds 54 ready-made circuits, each with probes already placed:
+The Example menu holds 87 ready-made circuits, each with probes already placed and the scope set to
+the view that shows the point:
 
 - **First steps:** RC low-pass filter; Voltage divider; RC high-pass (differentiator); RL circuit: current build-up; Superposition of two sources.
-- **Analysis views:** Bode plot: RC low-pass; Bode plot: RLC band-pass; Bode plot: Sallen-Key low-pass; Bode plot: common-emitter amplifier; Bode plot: op-amp gain and bandwidth; Spectrum: harmonics of a square wave; Spectrum: crossover distortion; X-Y: diode characteristic curve; X-Y: Schmitt trigger hysteresis; X-Y: Lissajous figure; Power in a resistor and a capacitor; Math trace: charge from current.
+- **Bode plots:** Bode plot: twin-T notch filter; Bode plot: two-way loudspeaker crossover; Bode plot: op-amp band-pass filter; Bode plot: three RC sections; Bode plot: compensated 10× probe divider; Bode plot: RC low-pass; Bode plot: RC high-pass; Bode plot: RLC band-pass; Bode plot: LC filter with a resonance peak; Bode plot: impedance of a series RLC; Bode plot: Sallen-Key low-pass; Bode plot: op-amp integrator; Bode plot: op-amp gain and bandwidth; Bode plot: common-emitter amplifier; Bode plot: gain between two nodes (ratio trace).
+- **Spectrum:** Spectrum: mixing two tones in a diode; Spectrum: harmonics of a square wave; Spectrum: sine, square, triangle and sawtooth; Spectrum: AM carrier and sidebands; Spectrum: FM sidebands; Spectrum: two close tones; Spectrum: diode clipper distortion; Spectrum: half-wave rectifier; Spectrum: crossover distortion; Spectrum: op-amp clipping; Spectrum: noise before and after a filter; Spectrum: PWM before and after the LC filter.
+- **X-Y plots:** X-Y: transistor output curve; X-Y: MOSFET transfer curve; X-Y: zener diode curve; X-Y: diode characteristic curve; X-Y: Schmitt trigger hysteresis; X-Y: Lissajous figure; X-Y: phase shift as an ellipse; X-Y: CMOS inverter transfer curve; X-Y: amplifier clipping; X-Y: crossover distortion.
+- **Power and math:** Power in a resistor and a capacitor; Power: real and reactive power in an RL circuit; Power: buck converter input and output; Power: dissipation in a switching MOSFET; Math trace: charge from current; Math trace: energy stored in a capacitor; Math trace: slope of a capacitor voltage; Math trace: differential output.
 - **Signals:** Signal shapes: sine, square, triangle, sawtooth; Signal shapes: pulse, exponential, FM, noise; Beats from two close frequencies; Ideal amplifier from a controlled source.
 - **Resonance and filters:** Series RLC step response; LC tank ringing down; RLC band-pass with a frequency sweep; Noise through a low-pass filter; PWM smoothed by an LC filter; Sallen-Key low-pass filter.
 - **Diodes:** Bridge rectifier with smoothing; AM envelope detector; Half-wave rectifier; Zener voltage regulator; Diode clipper; Diode clamper (DC restorer); Voltage doubler; LED and series resistor.
