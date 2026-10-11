@@ -9,6 +9,10 @@ node voltage or part current on an oscilloscope, and read or write SPICE netlist
 
 ![SPICE Electronics Lab](SPICE_Electronics_Lab.jpg)
 
+The Bode view, showing the gain and phase of a common-emitter amplifier:
+
+![Bode view](SPICE_Electronics_Lab_Bode.jpg)
+
 There is nothing to install or build. Open `SPICE_Electronics_Lab.html` in a browser, or put the file on
 any web server. Everything runs in the browser; no data leaves the page.
 
@@ -35,19 +39,27 @@ over the simulated time span.
 
 - Probe tool: click a wire or pin for that node's voltage, click a part for the current through it.
   On a transistor, click near the pin whose current you want. "Voltage across" gives the difference
-  between the two pins of a part.
-- Voltages on the left axis, currents on the right, or one lane per trace for signals of very
-  different size.
-- Per trace: value at the pointer, minimum, maximum, peak-to-peak, mean, RMS and frequency, measured
-  over the time shown on screen. Two cursors give time and value differences.
-- Scroll to zoom in time, drag to pan, double-click to see the whole run.
+  between the two pins of a part, and "Power" gives voltage across times current.
+- Math traces combine existing traces: difference, sum, product, ratio, derivative and integral.
+- Four views of the same probes:
+  - **Time:** voltages on the left axis, currents on the right, or one lane per trace. Per trace: value
+    at the pointer, minimum, maximum, peak-to-peak, mean, RMS and frequency, measured over the time
+    shown on screen. Two cursors give time and value differences. Scroll to zoom, drag to pan.
+  - **Spectrum:** the FFT of the time span on screen, in decibels or linear amplitude, on a linear or
+    logarithmic frequency axis. Per trace: DC level, fundamental frequency and amplitude, total
+    harmonic distortion, and the 2nd and 3rd harmonics.
+  - **X-Y:** every trace plotted against a chosen X trace, for device curves, hysteresis loops and
+    Lissajous figures.
+  - **Bode:** gain in decibels and phase against frequency, from an AC sweep of one source. Per trace:
+    low-frequency gain, peak gain and its frequency, and the -3 dB points.
 
 **SPICE import and export**
 
 - Export writes a standard netlist. The drawing is stored in comment lines starting with `*@`, which
   other simulators ignore, so an exported file comes back exactly as drawn.
 - Import reads R, C, L, V, I, D, Q, M, E, G and X elements, `.model`, `.subckt` (expanded), `.param`
-  with plain numbers, `.tran`, and the sources DC, SIN, PULSE, PWL, EXP, SFFM and AM. A netlist without
+  with plain numbers, `.tran`, `.ac`, and the sources DC, SIN, PULSE, PWL, EXP, SFFM and AM with an
+  optional AC value. A netlist without
   layout comments is drawn as a ladder: one vertical rail per node, parts in a column beside it.
 - Elements that are not supported (coupled inductors, transmission lines, behavioural sources,
   current-controlled sources) are skipped and listed after import.
@@ -57,9 +69,10 @@ over the simulated time span.
 
 ## Example labs
 
-The Example menu holds 42 ready-made circuits, each with probes already placed:
+The Example menu holds 54 ready-made circuits, each with probes already placed:
 
 - **First steps:** RC low-pass filter; Voltage divider; RC high-pass (differentiator); RL circuit: current build-up; Superposition of two sources.
+- **Analysis views:** Bode plot: RC low-pass; Bode plot: RLC band-pass; Bode plot: Sallen-Key low-pass; Bode plot: common-emitter amplifier; Bode plot: op-amp gain and bandwidth; Spectrum: harmonics of a square wave; Spectrum: crossover distortion; X-Y: diode characteristic curve; X-Y: Schmitt trigger hysteresis; X-Y: Lissajous figure; Power in a resistor and a capacitor; Math trace: charge from current.
 - **Signals:** Signal shapes: sine, square, triangle, sawtooth; Signal shapes: pulse, exponential, FM, noise; Beats from two close frequencies; Ideal amplifier from a controlled source.
 - **Resonance and filters:** Series RLC step response; LC tank ringing down; RLC band-pass with a frequency sweep; Noise through a low-pass filter; PWM smoothed by an LC filter; Sallen-Key low-pass filter.
 - **Diodes:** Bridge rectifier with smoothing; AM envelope detector; Half-wave rectifier; Zener voltage regulator; Diode clipper; Diode clamper (DC restorer); Voltage doubler; LED and series resistor.
@@ -92,6 +105,10 @@ or Backward Euler and Newton iteration at every step. Steps land on the corners 
 waveform. Fast positive-feedback switching (Schmitt triggers, multivibrators, latches) is detected and
 followed with extra small steps.
 
+AC analysis for the Bode view linearises the circuit at its operating point, with every source resting
+at its offset, and solves the complex equations at 40 frequencies per decade. Exported netlists carry
+the matching `.ac` line and `DC` and `AC` values on the sources.
+
 Device models:
 
 - Diode: Shockley equation with reverse breakdown and a constant junction capacitance.
@@ -102,7 +119,10 @@ Device models:
 
 ## Limits
 
-- Only transient analysis. No AC sweep, DC sweep or noise analysis.
+- Transient and AC analysis only. No DC sweep, parameter sweep or noise analysis.
+- The Bode view is small-signal: clipping, switching and other large-signal effects do not show in it.
+- The spectrum is computed from the simulated points, so the solver's own error sets its noise floor
+  (typically 60 to 80 dB below the signal). More points lower it.
 - The semiconductor models leave out series resistance, charge storage, the Early effect and
   temperature. The part presets (1N4148, 2N3904, 2N7000 and others) use typical published parameter
   values and are not manufacturer models.
