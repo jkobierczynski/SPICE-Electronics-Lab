@@ -1,7 +1,8 @@
 # SPICE Electronics Lab
 
 An electronics bench in a single web page. Draw a circuit, drive it with a signal generator, probe any
-node voltage or part current on an oscilloscope, and read or write SPICE netlists.
+node voltage or part current on an oscilloscope, read or write SPICE netlists, and open LTspice
+schematics as they were drawn.
 
 **Live demo:** <https://jurgenkobierczynski.com/SPICE_Electronics_Lab/SPICE_Electronics_Lab.html>
 
@@ -17,6 +18,11 @@ The DC view with a parameter sweep: collector current against collector voltage 
 
 ![DC sweep with a parameter sweep](SPICE_Electronics_Lab_Sweep.jpg)
 
+An LTspice schematic opened in the lab, kept as it was drawn
+([Astable_multivibrator.asc](Astable_multivibrator.asc)):
+
+![LTspice schematic imported](SPICE_Electronics_Lab_LTspice.jpg)
+
 There is nothing to install or build. Open `SPICE_Electronics_Lab.html` in a browser, or put the file on
 any web server. Everything runs in the browser; no data leaves the page.
 
@@ -30,6 +36,8 @@ any web server. Everything runs in the browser; no data leaves the page.
   NAND, OR, NOR, XOR, XNOR), voltage-controlled voltage and current sources, ground and net labels.
 - Place parts from the rack, drag from a pin to wire, drag parts to move them (wires follow), rotate,
   mirror, duplicate, undo and redo. Pan by dragging the sheet, zoom with the wheel.
+- A transformer can be drawn with its secondary dot at the bottom, and a 555 timer as the 8-pin
+  package with pins 1 to 8 in order (both as in LTspice).
 - Values accept engineering notation: `4.7k`, `100n`, `2.2u`, `1M`, `1meg`.
 - Themes: follows the system light or dark setting, or pick Lab Light, Lab Dark, Solarized Light,
   Solarized Dark, Nord, Catppuccin Latte or Catppuccin Mocha. The choice is remembered in the browser.
@@ -69,10 +77,14 @@ over the simulated time span.
 - Export writes a standard netlist. The drawing is stored in comment lines starting with `*@`, which
   other simulators ignore, so an exported file comes back exactly as drawn.
 - Import reads R, C, L, V, I, D, Q, M, J, S, E, G and X elements, a K coupling between two inductors
-  (it becomes a transformer), `.model`, `.subckt` (expanded), `.param` with plain numbers, `.tran`,
-  `.ac`, `.dc`, and the sources DC, SIN, PULSE, PWL, EXP, SFFM and AM with an optional AC value. A
-  netlist without layout comments is drawn as a ladder: one vertical rail per node, parts in a column
-  beside it.
+  (it becomes a transformer), `.model`, `.subckt` (expanded), `.param` and `{expressions}` (with
+  `.func`, `if()`, comparisons and the usual functions; the tolerance functions `mc`, `gauss` and
+  `flat` give the nominal value), `.tran`, `.ac`, `.dc`, `.step` of one value (it becomes a parameter
+  sweep), and the sources DC, SIN, PULSE, PWL, EXP, SFFM and AM with an optional AC value. LTspice's
+  forms are understood as well: `.tran` with only a stop time, `startup`, a maximum time step, VDMOS
+  power MOSFET models, a PULSE with a cycle count of 1. A netlist without layout comments is drawn as a
+  ladder: one vertical rail per node, parts in a column beside it.
+- A file from another program gets enough points to follow every edge of its fastest pulse source.
 - Elements that are not supported (transmission lines, behavioural sources, current-controlled
   sources, couplings between more than two inductors) are skipped and listed after import.
 - How parts are written:
@@ -87,6 +99,32 @@ over the simulated time span.
     understand.
 - In SPICE files `M` means milli and `MEG` means mega; the lab reads and writes files that way, while
   its own value fields treat a capital `M` as mega.
+
+**LTspice schematics**
+
+Import an LTspice `.asc` file, or drop it on the page, and it arrives as drawn: the same wires, ground
+symbols and net labels, with the lab's own part in the place of each LTspice symbol. Where a pin of the
+lab's part sits elsewhere than the LTspice pin, a short wire is routed between them, around the other
+parts; wire ends left over are trimmed.
+
+- Recognised symbols: resistors, capacitors, inductors (two with a K line become a transformer, drawn
+  with the secondary dot where LTspice has it), voltage and current sources (including battery, cell
+  and signal), diodes, zeners, Schottky diodes, LEDs, NPN and PNP transistors, N and P channel MOSFETs
+  (3 and 4 pin), N and P channel JFETs, the voltage-controlled switch, E and G sources, the NE555 (drawn
+  as the package), the ideal `opamp`, `opamp2`, `UniversalOpamp2`, the op-amps and comparators of
+  LTspice's library in their common pin layouts, and the digital AND, OR, XOR, buffer, inverter and
+  Schmitt trigger when one output and at most two inputs are in use.
+- Op-amps and comparators take their output limits from the supply rails, when those come from a DC
+  source to ground. Gates take their logic level from `Vhigh`.
+- LTspice's own model library is not in the file. Models whose names the lab knows (2N3904, 1N4148,
+  2N7000 and the other presets) are used; for the rest typical values are filled in, a Zener's voltage
+  taken from its name where it shows (BZX84C5V1), and each such part is listed in the import notes.
+- Behavioural sources, current-controlled sources, transmission lines and symbols from other libraries
+  are left out and listed.
+- The symbol pin positions were taken from LTspice's library files. Before the drawing is shown, its
+  connections are compared with a netlist worked out from the `.asc` file alone; if they differ, the
+  circuit is laid out as a ladder instead and the notes say so.
+- LTspice saves schematics as UTF-16 or Windows-1252 text; both are read, and so is UTF-8.
 
 ## Example labs
 
@@ -129,7 +167,8 @@ Every example is an ordinary circuit: edit it, re-probe it, or export it as a ne
 
 Transient analysis by modified nodal analysis: a DC operating point (Newton iteration, with gmin
 stepping, source stepping and a settle-from-zero fallback), then time steps with the trapezoidal rule
-or Backward Euler and Newton iteration at every step.
+or Backward Euler and Newton iteration at every step. A circuit for which no operating point can be
+found at all (some oscillators and latches) starts from zero instead, as if switched on.
 
 The time step is error-controlled. The number of points sets the longest step; wherever the estimated
 error of a step is larger than the tolerance (relative 0.1 %, as in SPICE), the step is repeated
@@ -140,7 +179,8 @@ well. "Fixed step" switches this off and takes exactly one step per point.
 Parts with a state (the 555 timer, switches) change state at the moment their input crosses the
 threshold: that moment is located inside the step, so timing does not depend on the number of points.
 Fast positive-feedback switching (Schmitt triggers, multivibrators, latches) is detected and followed
-with extra small steps.
+with extra small steps; where Newton iteration still fails, the step is halved, down to picoseconds
+if needed, so that even the snap of a fast transistor pair in a slow circuit is followed.
 
 AC analysis for the Bode view linearises the circuit at its operating point, with every source resting
 at its offset, and solves the complex equations at 40 frequencies per decade. The DC sweep finds one
@@ -152,7 +192,8 @@ Device models:
 - Diode: Shockley equation with reverse breakdown and junction capacitance.
 - Bipolar transistor: Ebers-Moll transport model with junction capacitances.
 - MOSFET: level 1 square law with channel-length modulation and constant gate capacitances; the bulk
-  is tied to the source.
+  is tied to the source, and the body diode between source and drain conducts when the drain is
+  driven the wrong way round, as in SPICE.
 - JFET: Shichman-Hodges square law with gate junctions and their capacitances.
 - Junction capacitances follow the voltage across the junction, with the SPICE formula. When a
   transistor model gives no capacitance, a small one is assumed (5 pF and 3 pF for a bipolar
@@ -172,9 +213,9 @@ Device models:
 Every example was exported as a netlist, run in ngspice 45.2 and compared with the lab's own result at
 every probed node. ngspice ran as the WebAssembly build from the `eecircuit-engine` package.
 
-- Transient: 117 of the 119 examples agree within 2 % of the signal's span, the other two within 5 %.
-  The two are a boost converter and a relay coil with a flyback diode, where the two programs resolve
-  the ringing after a switching edge slightly differently. Free-running oscillators are compared by
+- Transient: 118 of the 119 examples agree within 2 % of the signal's span, the other within 5 %.
+  That one is a relay coil with a flyback diode, where the two programs resolve the ringing after the
+  switching edge slightly differently. Free-running oscillators are compared by
   frequency and swing, because their phase is arbitrary.
 - AC: all 20 examples with a Bode view agree within 0.01 dB and 0.1 degree.
 - DC sweep: all 8 examples with a DC view agree within 0.1 %.
@@ -189,7 +230,14 @@ Two things the comparison showed that are worth knowing when you take a netlist 
 - ngspice's switch with hysteresis can lose its state when its control voltage comes from an
   expression source, so the exported 555 timer keeps its state on a capacitor instead.
 
-LTspice has not been tried.
+The LTspice import was tried on the 131 schematics of a public collection
+([mick001/Circuits-LTSpice](https://github.com/mick001/Circuits-LTSpice)) and on the test files of the
+spicelib project, which come with the netlists LTspice made from them. All 131 open as drawn, and
+where LTspice's netlist is at hand the connections match it. Run in ngspice, 101 of them agree within
+2 % and 2 more within 5 %. Most of the rest are circuits with two stable states (latches, Schmitt
+triggers, thyristor pairs) that the two programs settle differently at the start, circuits on which
+ngspice itself gives up, and nodes that float. Three do not run here: two take longer than the 10 s
+limit, and one ties two comparator outputs together. LTspice itself was not run.
 
 ## Limits
 
@@ -204,8 +252,10 @@ LTspice has not been tried.
   their own beyond the timer's divider, no input current, and no limits on output current other than
   their output resistance.
 - A DC sweep follows one branch of a circuit with hysteresis (it sweeps upwards only).
-- A parameter sweep steps one value. Nested sweeps and SPICE `.step` lines are not supported; the
-  sweep is stored in the layout comments.
+- A parameter sweep steps one value. A `.step` of one parameter that sets one value is read as a
+  sweep; nested sweeps are not supported. The sweep is stored in the layout comments.
+- From LTspice schematics only the symbols listed above are read, and LTspice's own model library is
+  not available, so its parts get typical values unless the file defines them.
 - The page handles circuits up to 400 unknowns and stops a run after 10 seconds.
 
 ## Relation to SPICE
