@@ -1,8 +1,8 @@
 # SPICE Electronics Lab
 
 An electronics bench in a single web page. Draw a circuit, drive it with a signal generator, probe any
-node voltage or part current on an oscilloscope, read or write SPICE netlists, and open LTspice
-schematics as they were drawn.
+node voltage or part current on an oscilloscope, read or write SPICE netlists, open LTspice
+schematics as they were drawn, and take pictures and data out.
 
 **Live demo:** <https://jurgenkobierczynski.com/SPICE_Electronics_Lab/SPICE_Electronics_Lab.html>
 
@@ -126,6 +126,23 @@ parts; wire ends left over are trimmed.
   circuit is laid out as a ladder instead and the notes say so.
 - LTspice saves schematics as UTF-16 or Windows-1252 text; both are read, and so is UTF-8.
 
+**Getting results out**
+
+- **Export** offers four things: the SPICE netlist; a picture of the schematic; a picture of the
+  scope view as it is set, with a title and a legend that names every trace (and every run of a
+  parameter sweep); and the traces of the current view as a CSV table.
+- Pictures are SVG, sharp at any size and editable in a drawing program, or PNG at twice screen
+  resolution. They use the colours of the theme in use, so a dark theme gives dark pictures.
+- The CSV table holds every point of the run, not only the part on screen: time and the traces for the
+  Time and X-Y views, frequency and amplitudes for the Spectrum, frequency with gain and phase per trace
+  for Bode, the swept value for DC. With a parameter sweep each run follows the one before, marked by a
+  first column with the swept value. Numbers can be written with a decimal point and commas, or with a
+  decimal comma and semicolons for spreadsheets set up that way.
+- **Saved** keeps the circuit on the sheet in the browser under a name, as many as you like; saved
+  circuits head the Example list and open from there. They stay in that browser on that device: use
+  Export for a copy elsewhere. The circuit being worked on is also kept by itself and comes back when
+  the page is opened again.
+
 ## Example labs
 
 The Example menu holds 119 ready-made circuits, each with probes already placed and the scope set to
@@ -146,7 +163,7 @@ the view that shows the point:
 - **Timers and logic:** 555 timer as an oscillator (astable); 555 timer as a one-shot (monostable); Logic gates: AND, OR and XOR; Set-reset latch from two NOR gates; Ring oscillator from three inverters.
 - **Power and switching:** MOSFET switch with inductive load; Buck converter (step-down); Boost converter (step-up); Switching off a coil: the flyback diode.
 
-Every example is an ordinary circuit: edit it, re-probe it, or export it as a netlist.
+Every example is an ordinary circuit: edit it, re-probe it, save it under your own name, or export it.
 
 ## Keyboard
 

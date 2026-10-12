@@ -79,7 +79,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand svg { width: 26px; height: 26px; color: var(--accent); flex: none; }
 .brand h1 { margin: 0; font: 600 19px/1 var(--label); letter-spacing: .02em; text-wrap: balance; }
 .group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; min-width: 0; max-width: 100%; }
-#exSel { min-width: 0; max-width: min(100%, 340px); flex: 0 1 auto; text-overflow: ellipsis; }
+#exSel { min-width: 0; max-width: min(100%, 290px); flex: 0 1 auto; text-overflow: ellipsis; }
 .group.end { margin-left: auto; }
 .btn { height: 30px; padding: 0 11px; border: 1px solid var(--line); border-radius: 5px; background: var(--panel); cursor: pointer; font: 500 13.5px/1 var(--ui); white-space: nowrap; }
 .btn:hover { border-color: var(--ink-3); }
@@ -135,12 +135,12 @@ input[aria-invalid="true"] { border-color: var(--bad); }
 .prb-line { stroke: var(--c); stroke-width: .07; fill: none; }
 .prb-arrow { fill: var(--c); stroke: var(--paper); stroke-width: .05; }
 #labels, #labels * { pointer-events: none; }
-#labels text { font-family: var(--mono); font-weight: 500; fill: var(--ink); }
-#labels text.val { fill: var(--ink-2); font-weight: 400; }
-#labels text.sel { fill: var(--accent); }
-#labels text.net { fill: var(--accent); font-weight: 500; }
-#labels text.tag { fill: var(--c); font-weight: 500; paint-order: stroke; stroke: var(--paper); stroke-width: 3px; }
-#labels path.mark { stroke: var(--ink); stroke-width: 1.4px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.lbls text { font-family: var(--mono); font-weight: 500; fill: var(--ink); }
+.lbls text.val { fill: var(--ink-2); font-weight: 400; }
+.lbls text.sel { fill: var(--accent); }
+.lbls text.net { fill: var(--accent); font-weight: 500; }
+.lbls text.tag { fill: var(--c); font-weight: 500; paint-order: stroke; stroke: var(--paper); stroke-width: 3px; }
+.lbls path.mark { stroke: var(--ink); stroke-width: 1.4px; fill: none; stroke-linecap: round; stroke-linejoin: round; }
 #prev { color: var(--accent); opacity: .75; pointer-events: none; }
 #prev .wire { stroke: var(--accent); }
 #marq { fill: var(--accent-soft); stroke: var(--accent); stroke-width: .05; stroke-dasharray: .2 .15; }
@@ -230,6 +230,21 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
 .dlg ul { margin: 0; padding-left: 18px; font-size: 13.5px; color: var(--ink-2); display: flex; flex-direction: column; gap: 4px; max-width: 70ch; }
 .dlg ul b { color: var(--ink); font-weight: 600; }
 .note { font-size: 12.5px; color: var(--ink-2); }
+.dlg .tabs { align-self: flex-start; max-width: 100%; flex-wrap: wrap; }
+.dlg .tabs .tab { height: 30px; padding: 0 12px; font-size: 13px; }
+.expprev { border: 1px solid var(--line); border-radius: 5px; background: var(--paper); min-height: 120px; overflow: auto; display: flex; align-items: center; justify-content: center; padding: 8px; }
+.expprev svg { max-width: 100%; max-height: min(46vh, 380px); width: auto; height: auto; display: block; }
+.expprev p { padding: 0 12px; text-align: center; }
+.dlg .row label.pick { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink-2); }
+.dlg .row label.pick select { height: 28px; font-size: 13px; }
+.lib { list-style: none; margin: 0; padding: 0 !important; gap: 0 !important; max-width: none !important; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); }
+.lib li { display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.lib li:last-child { border-bottom: 0; }
+.lib li .nm { flex: 1; min-width: 0; color: var(--ink); font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lib li .meta { font: 400 11.5px/1.2 var(--mono); color: var(--ink-3); white-space: nowrap; }
+.lib li.empty { color: var(--ink-2); font-size: 13px; }
+.libform { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.libform input { flex: 1; min-width: 160px; height: 30px; }
 .note.bad { color: var(--bad); }
 .note a { color: var(--accent); }
 
@@ -265,8 +280,9 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
       <label class="cap" for="exSel">Example</label>
       <select id="exSel" aria-label="Load an example circuit"></select>
       <button class="btn" id="btnNew" type="button">New</button>
+      <button class="btn" id="btnLib" type="button" title="Keep this circuit in the browser under a name, or open one you kept">Saved</button>
       <button class="btn" id="btnImport" type="button" title="Load a SPICE netlist or an LTspice schematic">Import</button>
-      <button class="btn" id="btnExport" type="button">Export SPICE</button>
+      <button class="btn" id="btnExport" type="button" title="SPICE netlist, pictures of the schematic and the scope, trace data">Export</button>
     </div>
     <div class="group end">
       <label class="cap" for="themeSel">Theme</label>
@@ -294,7 +310,7 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
         <defs><pattern id="gridp" patternUnits="userSpaceOnUse" width="20" height="20"><circle id="gridDot" cx="10" cy="10" r="1" fill="var(--grid)"/></pattern></defs>
         <rect id="gridRect" width="100%" height="100%" fill="url(#gridp)"/>
         <g id="world"><g id="layer"></g><g id="prev"></g></g>
-        <g id="labels"></g>
+        <g id="labels" class="lbls"></g>
       </svg>
       <div class="hint" id="hint"></div>
       <div class="zoom">
@@ -407,17 +423,40 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
 
 <dialog id="dlgExport" aria-labelledby="expT">
   <div class="dlg">
-    <h2 id="expT">Export as SPICE netlist</h2>
-    <p>Standard SPICE syntax, written for ngspice and LTspice. The lines starting with <code>*@</code> are comments that store the drawing, so this lab can restore the schematic exactly.</p>
-    <textarea id="expText" spellcheck="false" readonly aria-label="SPICE netlist"></textarea>
+    <h2 id="expT">Export</h2>
+    <div class="tabs" id="expKind" role="tablist" aria-label="What to export">
+      <button class="tab on" type="button" role="tab" data-kind="spice">SPICE netlist</button>
+      <button class="tab" type="button" role="tab" data-kind="sch">Schematic picture</button>
+      <button class="tab" type="button" role="tab" data-kind="scope">Scope picture</button>
+      <button class="tab" type="button" role="tab" data-kind="csv">Trace data</button>
+    </div>
+    <p id="expHelp"></p>
+    <textarea id="expText" spellcheck="false" readonly aria-label="Text to export"></textarea>
+    <div class="expprev" id="expPrev" hidden></div>
     <div class="row">
-      <label class="f chk"><input type="checkbox" id="expLayout" checked> <span>Include the drawing (layout comments)</span></label>
+      <label class="f chk" id="expLayoutL"><input type="checkbox" id="expLayout" checked> <span>Include the drawing (layout comments)</span></label>
+      <label class="pick" id="expFmtL" hidden>Format <select id="expFmt"><option value="svg">SVG (sharp at any size)</option><option value="png">PNG (bitmap)</option></select></label>
+      <label class="pick" id="expSepL" hidden>Written as <select id="expSep"><option value=",">1.5 with commas between columns</option><option value=";">1,5 with semicolons between columns</option></select></label>
       <span class="sp"></span>
       <span class="note" id="expNote"></span>
       <button class="btn" type="button" id="expClose">Close</button>
       <button class="btn" type="button" id="expCopy">Copy</button>
       <button class="btn go" type="button" id="expSave">Save file</button>
     </div>
+  </div>
+</dialog>
+
+<dialog id="dlgLib" aria-labelledby="libT">
+  <div class="dlg">
+    <h2 id="libT">Saved circuits</h2>
+    <p>Circuits saved here stay in this browser on this device, each under its own name. They also appear at the top of the Example list. To keep a copy elsewhere, use Export and save the netlist.</p>
+    <form class="libform" id="libForm">
+      <input type="text" id="libName" maxlength="60" autocomplete="off" spellcheck="false" aria-label="Name for this circuit">
+      <button class="btn go" type="submit">Save this circuit</button>
+    </form>
+    <div class="note" id="libNote"></div>
+    <div class="scroll"><ul class="lib" id="libList"></ul></div>
+    <div class="row"><span class="sp"></span><button class="btn" type="button" id="libClose">Close</button></div>
   </div>
 </dialog>
 
@@ -468,6 +507,12 @@ dialog::backdrop { background: rgba(8, 14, 20, .5); }
         <li><b>Read:</b> R C L V I D Q M J S E G X, K between two inductors (a transformer), <code>.model</code>, <code>.subckt</code> (expanded), <code>.param</code> and <code>{expressions}</code> (with <code>.func</code>, <code>if()</code> and the usual functions; tolerance functions give the nominal value), <code>.tran</code>, <code>.ac</code>, <code>.dc</code>, <code>.step</code> of one value (it becomes a parameter sweep), and sources DC, SIN, PULSE, PWL, EXP, SFFM, AM with an optional AC value. LTspice forms are understood too: <code>.tran</code> with only a stop time, <code>startup</code>, VDMOS power MOSFET models, a single-cycle PULSE. Anything else is listed after import and left out.</li>
         <li><b>Written:</b> square, triangle and sawtooth become PULSE; noise becomes PWL; AM and FM become expression (B) sources, because SPICE programs disagree on the order of the AM and SFFM arguments. A potentiometer is two resistors, a transformer two inductors with a K line and two loss resistors, a timed switch a switch with its own pulse source. The op-amp, comparator, 555 timer and logic gates become small subcircuits; those of the timer and gates use expression sources, which ngspice and LTspice understand.</li>
         <li>A parameter sweep is kept in the layout comments. Other programs ignore it.</li>
+      </ul>
+      <h3>Saving and exporting</h3>
+      <ul>
+        <li><b>Saved</b> keeps the circuit on the sheet in this browser under a name; saved circuits head the Example list. They stay on this device only: use Export for a copy elsewhere.</li>
+        <li><b>Export</b> writes the SPICE netlist, a picture of the schematic or of the scope (SVG, sharp at any size, or PNG), or the traces of the current view as a CSV table. The pictures use the colours of the theme in use; the table holds every point of the run, one block per run when a sweep is on.</li>
+        <li>The circuit you are working on is also kept by itself and comes back when the page is opened again.</li>
       </ul>
       <h3>LTspice schematics</h3>
       <ul>
@@ -4188,19 +4233,27 @@ function renderSch() {
   const dot = $('gridDot');
   dot.setAttribute('cx', k / 2); dot.setAttribute('cy', k / 2); dot.setAttribute('r', k < 9 ? 0 : Math.min(1.3, k / 16));
 
+  const m = schMarkup(k, false);
+  $('layer').innerHTML = m.g;
+  $('labels').innerHTML = m.t;
+}
+// The drawing as SVG markup: g in grid units, t (the upright text) in pixels at k pixels per grid step.
+// "clean" leaves out everything that only serves editing: selection, pin targets, hit areas, open-end marks.
+function schMarkup(k, clean) {
   let g = '', t = '';
   sch.wires.forEach(function (w) {
     const a = ' x1="' + w.x1 + '" y1="' + w.y1 + '" x2="' + w.x2 + '" y2="' + w.y2 + '"';
-    g += '<g class="w' + (sel.has(w.id) ? ' sel' : '') + '" data-id="' + w.id + '"><line class="whit"' + a + '/><line class="wire"' + a + '/></g>';
+    if (clean) g += '<line class="wire"' + a + '/>';
+    else g += '<g class="w' + (sel.has(w.id) ? ' sel' : '') + '" data-id="' + w.id + '"><line class="whit"' + a + '/><line class="wire"' + a + '/></g>';
   });
   sch.parts.forEach(function (p) {
-    const s = sel.has(p.id);
-    g += partGeom(p, s ? 'sel' : '');
+    const s = !clean && sel.has(p.id);
+    g += clean ? partGeom(p, '').replace(/<rect class="hit"[^>]*\/>/, '') : partGeom(p, s ? 'sel' : '');
     t += partText(p, k, s ? 'sel' : '');
   });
   ex.junctions.forEach(function (j) { g += '<circle class="junc" cx="' + j[0] + '" cy="' + j[1] + '" r=".19"/>'; });
-  ex.dangling.forEach(function (d) { if (d.part.type !== 'LBL') g += '<rect class="dang" x="' + (d.x - 0.2) + '" y="' + (d.y - 0.2) + '" width=".4" height=".4"/>'; });
-  sch.parts.forEach(function (p) {
+  if (!clean) ex.dangling.forEach(function (d) { if (d.part.type !== 'LBL') g += '<rect class="dang" x="' + (d.x - 0.2) + '" y="' + (d.y - 0.2) + '" width=".4" height=".4"/>'; });
+  if (!clean) sch.parts.forEach(function (p) {
     if (p.type === 'GND' || p.type === 'LBL') return;
     E.partPins(p, sch).forEach(function (q, i) { g += '<circle class="pin" data-pin="' + q[0] + ',' + q[1] + '" data-owner="' + p.id + '" data-idx="' + i + '" cx="' + q[0] + '" cy="' + q[1] + '" r=".42"/>'; });
   });
@@ -4232,8 +4285,7 @@ function renderSch() {
     g += '</g>';
     t += '<text class="tag" ' + c + ' x="' + (tx * k).toFixed(1) + '" y="' + (ty * k).toFixed(1) + '" text-anchor="' + anchor + '" font-size="' + (0.66 * k).toFixed(1) + '">' + esc(info.label) + '</text>';
   });
-  $('layer').innerHTML = g;
-  $('labels').innerHTML = t;
+  return { g: g, t: t };
 }
 function renderPreview() {
   let s = '';
@@ -5338,8 +5390,15 @@ function drawScope() {
   const cv = $('plot'), box = $('screen').getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
   const W = Math.max(160, Math.floor(box.width)), H = Math.max(100, Math.floor(box.height));
   if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
-  const g = cv.getContext('2d'), C = colors();
+  const g = cv.getContext('2d');
   g.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const r = paintScope(g, W, H);
+  const msg = $('smsg');
+  msg.hidden = !r.text; msg.textContent = r.text; msg.classList.toggle('bad', !!r.bad);
+}
+// Paints the current view into any 2D context of W by H pixels (the screen, a bitmap for export, or the SVG recorder).
+function paintScope(g, W, H) {
+  const C = colors();
   g.fillStyle = C.screen; g.fillRect(0, 0, W, H);
   const narrow = W < 420;
   const P = { g: g, C: C, W: W, H: H, narrow: narrow, mL: narrow ? 46 : 60, mR2: narrow ? 46 : 60 };
@@ -5362,8 +5421,7 @@ function drawScope() {
   }
   g.globalAlpha = 1;
   if (text) gratLin(P, P.mL, W - 12, 8, H - 22, 10, 8);
-  const msg = $('smsg');
-  msg.hidden = !text; msg.textContent = text; msg.classList.toggle('bad', !!(res && !res.ok && !res.soft));
+  return { text: text, bad: !!(res && !res.ok && !res.soft), vis: vis, C: C };
 }
 
 /* ---- time, and the DC sweep (same picture with the swept value along the bottom) ---- */
@@ -6070,32 +6128,378 @@ const downloads = (function () {
   return null;
 })();
 function slug() { return (sch.title || 'circuit').toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') || 'circuit'; }
-function saveFile(text) {
-  const note = $('expNote');
+// Hands a file to the reader: through the viewer's save prompt when the page runs inside one, as a plain download otherwise.
+function saveAs(filename, data, mime, done) {
+  const note = $('expNote'), isText = typeof data === 'string';
   if (!downloads) {
     const a = document.createElement('a');
-    a.href = URL.createObjectURL(new Blob([text], { type: 'text/plain' }));
-    a.download = slug() + '.cir';
+    a.href = URL.createObjectURL(isText ? new Blob([data], { type: mime }) : data);
+    a.download = filename;
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+    note.textContent = 'Saved as ' + filename + '.';
     return;
   }
+  const no = 'Saving is not available in this view.' + (isText ? ' Use Copy.' : '');
   downloads.then(function (dl) {
-    if (!dl) { note.textContent = 'Saving is not available in this view. Use Copy.'; return; }
-    return dl.save({ filename: slug() + '.cir.txt', data: text }).then(function () { note.textContent = 'Saved. Rename to .cir if your simulator wants it.'; }, function (err) {
-      note.textContent = err && err.code === 'declined' ? '' : 'Saving is not available in this view. Use Copy.';
+    if (!dl) { note.textContent = no; return; }
+    return dl.save({ filename: filename, data: data }).then(function () { note.textContent = done || 'Saved.'; }, function (err) {
+      note.textContent = err && err.code === 'declined' ? '' : no;
     });
   });
 }
-$('btnExport').addEventListener('click', function () { $('expNote').textContent = ''; $('expText').value = exportText(); $('dlgExport').showModal(); $('expText').scrollTop = 0; $('expText').setSelectionRange(0, 0); });
-$('expLayout').addEventListener('change', function () { $('expText').value = exportText(); });
+
+/* ---- pictures ---- */
+
+const SVGNS = 'http://www.w3.org/2000/svg';
+// The schematic as a stand-alone SVG. The drawing is built once more, placed out of sight inside the live sheet so that
+// the page's styles and the chosen theme apply, and every style that matters is then written into the elements.
+function schematicSVG() {
+  if (!sch.parts.length && !sch.wires.length) return null;
+  const k = 24, m = schMarkup(k, true);
+  const tmp = document.createElementNS(SVGNS, 'g');
+  tmp.setAttribute('visibility', 'hidden');
+  tmp.innerHTML = '<g transform="scale(' + k + ')">' + m.g + '</g><g class="lbls">' + m.t + '</g>';
+  svg.appendChild(tmp);
+  let bb;
+  try { bb = tmp.getBBox(); } catch (e) { bb = null; }
+  if (!bb || !(bb.width > 0)) { svg.removeChild(tmp); return null; }
+  const clear = function (c) { return !c || c === 'none' || c === 'transparent' || /rgba\(\s*0,\s*0,\s*0,\s*0\s*\)/.test(c); };
+  const els = Array.prototype.slice.call(tmp.querySelectorAll('*'));
+  els.forEach(function (el) {
+    if (el.tagName.toLowerCase() === 'g') return;
+    const cs = getComputedStyle(el);
+    el.setAttribute('fill', clear(cs.fill) ? 'none' : cs.fill);
+    if (clear(cs.stroke)) el.setAttribute('stroke', 'none');
+    else {
+      el.setAttribute('stroke', cs.stroke);
+      el.setAttribute('stroke-width', String(parseFloat(cs.strokeWidth)));
+      el.setAttribute('stroke-linecap', cs.strokeLinecap);
+      el.setAttribute('stroke-linejoin', cs.strokeLinejoin);
+      if (cs.strokeDasharray && cs.strokeDasharray !== 'none') el.setAttribute('stroke-dasharray', cs.strokeDasharray.replace(/px/g, ''));
+    }
+    if (el.tagName.toLowerCase() === 'text') {
+      el.setAttribute('font-family', cs.fontFamily);
+      el.setAttribute('font-weight', cs.fontWeight);
+      if (cs.paintOrder && cs.paintOrder !== 'normal') el.setAttribute('paint-order', cs.paintOrder);
+    }
+  });
+  els.forEach(function (el) {
+    Array.prototype.slice.call(el.attributes).forEach(function (a) { if (a.name === 'class' || a.name === 'style' || a.name.indexOf('data-') === 0) el.removeAttribute(a.name); });
+  });
+  const pad = 14, x = Math.floor(bb.x - pad), y = Math.floor(bb.y - pad), w = Math.ceil(bb.width + 2 * pad), h = Math.ceil(bb.height + 2 * pad);
+  const root = document.createElementNS(SVGNS, 'svg');
+  root.setAttribute('width', w); root.setAttribute('height', h); root.setAttribute('viewBox', x + ' ' + y + ' ' + w + ' ' + h);
+  const title = document.createElementNS(SVGNS, 'title');
+  title.textContent = sch.title || 'Schematic';
+  root.appendChild(title);
+  const bg = document.createElementNS(SVGNS, 'rect');
+  bg.setAttribute('x', x); bg.setAttribute('y', y); bg.setAttribute('width', w); bg.setAttribute('height', h);
+  bg.setAttribute('fill', getComputedStyle(document.documentElement).getPropertyValue('--paper').trim() || '#ffffff');
+  root.appendChild(bg);
+  svg.removeChild(tmp);
+  tmp.removeAttribute('visibility');
+  while (tmp.firstChild) root.appendChild(tmp.firstChild);
+  return { text: '<?xml version="1.0" encoding="UTF-8"?>\n' + new XMLSerializer().serializeToString(root) + '\n', w: w, h: h };
+}
+
+// A stand-in for a canvas context that writes SVG instead: just the calls the scope drawing uses.
+function SvgRecorder(meas) {
+  const out = [], defs = [], stack = [];
+  let st = { fillStyle: '#000', strokeStyle: '#000', lineWidth: 1, globalAlpha: 1, font: '10px sans-serif', textAlign: 'start', textBaseline: 'alphabetic', lineJoin: 'miter', dash: [], tx: 0, ty: 0, clip: '' };
+  let d = '', nclip = 0;
+  const n = function (v) { return String(+(+v).toFixed(2)); };
+  const X = function (x) { return n(x + st.tx); }, Y = function (y) { return n(y + st.ty); };
+  const common = function () { return (st.globalAlpha < 1 ? ' opacity="' + n(st.globalAlpha) + '"' : '') + (st.clip ? ' clip-path="url(#' + st.clip + ')"' : ''); };
+  const g = {
+    save: function () { stack.push(Object.assign({}, st, { dash: st.dash.slice() })); },
+    restore: function () { if (stack.length) st = stack.pop(); },
+    translate: function (x, y) { st.tx += x; st.ty += y; },
+    setTransform: function () {}, clearRect: function () {},
+    beginPath: function () { d = ''; },
+    moveTo: function (x, y) { d += 'M' + X(x) + ' ' + Y(y); },
+    lineTo: function (x, y) { d += (d ? 'L' : 'M') + X(x) + ' ' + Y(y); },
+    closePath: function () { d += 'Z'; },
+    rect: function (x, y, w, h) { d += 'M' + X(x) + ' ' + Y(y) + 'h' + n(w) + 'v' + n(h) + 'h' + n(-w) + 'Z'; },
+    arc: function (x, y, r) { d += 'M' + X(x + r) + ' ' + Y(y) + 'A' + n(r) + ' ' + n(r) + ' 0 1 0 ' + X(x - r) + ' ' + Y(y) + 'A' + n(r) + ' ' + n(r) + ' 0 1 0 ' + X(x + r) + ' ' + Y(y) + 'Z'; },
+    stroke: function () {
+      if (!d) return;
+      out.push('<path d="' + d + '" fill="none" stroke="' + esc(st.strokeStyle) + '" stroke-width="' + n(st.lineWidth) + '"' + (st.lineJoin !== 'miter' ? ' stroke-linejoin="' + st.lineJoin + '"' : '') +
+        (st.dash.length ? ' stroke-dasharray="' + st.dash.join(' ') + '"' : '') + common() + '/>');
+    },
+    fill: function () { if (d) out.push('<path d="' + d + '" fill="' + esc(st.fillStyle) + '"' + common() + '/>'); },
+    clip: function () { const id = 'clip' + (++nclip); defs.push('<clipPath id="' + id + '"><path d="' + d + '"/></clipPath>'); st.clip = id; },
+    fillRect: function (x, y, w, h) { out.push('<rect x="' + X(x) + '" y="' + Y(y) + '" width="' + n(w) + '" height="' + n(h) + '" fill="' + esc(st.fillStyle) + '"' + common() + '/>'); },
+    fillText: function (t, x, y) {
+      const f = /^\s*(?:(\d{3}|bold|normal)\s+)?([\d.]+)px\s+(.*)$/.exec(st.font) || [0, '', '10', 'monospace'], size = +f[2];
+      const anchor = st.textAlign === 'center' ? 'middle' : st.textAlign === 'right' || st.textAlign === 'end' ? 'end' : 'start';
+      const dy = st.textBaseline === 'top' ? size * 0.82 : st.textBaseline === 'middle' ? size * 0.34 : st.textBaseline === 'bottom' ? -size * 0.2 : 0;
+      out.push('<text xml:space="preserve" x="' + X(x) + '" y="' + n(y + st.ty + dy) + '" font-family="' + esc(f[3]) + '" font-size="' + n(size) + '"' + (f[1] && f[1] !== 'normal' ? ' font-weight="' + f[1] + '"' : '') +
+        (anchor !== 'start' ? ' text-anchor="' + anchor + '"' : '') + ' fill="' + esc(st.fillStyle) + '"' + common() + '>' + esc(t) + '</text>');
+    },
+    measureText: function (t) { meas.font = st.font; return meas.measureText(t); },
+    setLineDash: function (a) { st.dash = a.slice(); },
+    toSVG: function (W, H, title) {
+      return '<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="' + W + '" height="' + H + '" viewBox="0 0 ' + W + ' ' + H + '">\n<title>' + esc(title) + '</title>\n' +
+        (defs.length ? '<defs>' + defs.join('') + '</defs>\n' : '') + out.join('\n') + '\n</svg>\n';
+    }
+  };
+  ['fillStyle', 'strokeStyle', 'lineWidth', 'globalAlpha', 'font', 'textAlign', 'textBaseline', 'lineJoin'].forEach(function (k) {
+    Object.defineProperty(g, k, { get: function () { return st[k]; }, set: function (v) { st[k] = v; } });
+  });
+  return g;
+}
+const VIEW_NAME = { time: 'signals against time', fft: 'spectrum', xy: 'X-Y plot', bode: 'Bode plot', dc: 'DC sweep' };
+const PIC_W = 1000, PIC_H = 460;
+// The scope picture for export: a title, the plot as on screen (without the pointer read-out), and a legend.
+// Returns the height used. With measureOnly the layout is worked out and nothing is drawn.
+function scopePicture(g, measureOnly) {
+  const C = colors(), v = viewOf(), W = PIC_W, top = 32;
+  const vis = traces.filter(function (t) { return !t.hidden && (v === 'bode' ? t.bode : v === 'dc' ? t.d : t.y); });
+  const items = [];
+  const perRun = runs.length > 1 && sweepInfo && vis.length === 1;
+  if (perRun) sweepInfo.vals.forEach(function (val, k) { items.push({ c: C.ch[k % NCH], text: labelOf(vis[0]) + ' at ' + sweepInfo.part.name + ' ' + sweepInfo.label + ' = ' + fmtM(val, sweepInfo.unit) }); });
+  else vis.forEach(function (t) { items.push({ c: C.ch[t.c], text: labelOf(t) }); });
+  let note = '';
+  if (runs.length > 1 && sweepInfo && !perRun) {
+    note = 'Sweep of ' + sweepInfo.part.name + ' ' + sweepInfo.label + ': ' + sweepInfo.vals.map(function (q) { return fmtM(q, sweepInfo.unit); }).join(', ') +
+      '. Full-strength lines: ' + fmtM(sweepInfo.vals[runSel], sweepInfo.unit) + '.';
+  }
+  g.font = '12px ' + C.mono;
+  const rows = [[]];
+  let x = 16;
+  items.forEach(function (it) {
+    const w = 30 + g.measureText(it.text).width + 22;
+    if (x + w > W - 12 && rows[rows.length - 1].length) { rows.push([]); x = 16; }
+    it.x = x; rows[rows.length - 1].push(it); x += w;
+  });
+  const legendH = (items.length ? rows.length * 20 : 0) + (note ? 20 : 0) + 14;
+  const total = top + PIC_H + legendH;
+  if (measureOnly) return total;
+  const keep = { geom: scope.geom, hover: scope.hover, xyh: scope.xyh };
+  scope.hover = null; scope.xyh = null;
+  g.fillStyle = C.screen; g.fillRect(0, 0, W, total);
+  g.save(); g.translate(0, top);
+  const r = paintScope(g, W, PIC_H);
+  g.restore();
+  scope.geom = keep.geom; scope.hover = keep.hover; scope.xyh = keep.xyh;
+  g.globalAlpha = 1; g.setLineDash([]);
+  g.font = '600 14px ' + C.mono; g.fillStyle = C.ink; g.textAlign = 'left'; g.textBaseline = 'middle';
+  g.fillText((sch.title || 'Circuit') + '  \u2013  ' + VIEW_NAME[v], 16, top / 2 + 3);
+  g.font = '12px ' + C.mono;
+  if (r.text) { g.fillStyle = C.ink2; g.textAlign = 'center'; g.fillText(r.text.length > 120 ? r.text.slice(0, 117) + '\u2026' : r.text, W / 2, top + PIC_H / 2); g.textAlign = 'left'; }
+  let y = top + PIC_H + 16;
+  if (items.length) rows.forEach(function (row) {
+    row.forEach(function (it) {
+      g.strokeStyle = it.c; g.lineWidth = 2.4; g.beginPath(); g.moveTo(it.x, y); g.lineTo(it.x + 22, y); g.stroke();
+      g.fillStyle = C.ink; g.fillText(it.text, it.x + 30, y + 0.5);
+    });
+    y += 20;
+  });
+  if (note) { g.fillStyle = C.ink2; g.fillText(note, 16, y + 0.5); }
+  return total;
+}
+let measCtx = null;
+function scopeSVG() {
+  if (!measCtx) measCtx = document.createElement('canvas').getContext('2d');
+  const g = SvgRecorder(measCtx), h = scopePicture(g, false);
+  return { text: g.toSVG(PIC_W, h, (sch.title || 'Circuit') + ' - ' + VIEW_NAME[viewOf()]), w: PIC_W, h: h };
+}
+function scopePNG(done) {
+  const cv = document.createElement('canvas'), g = cv.getContext('2d'), s = 2;
+  cv.width = PIC_W * s; cv.height = scopePicture(g, true) * s;
+  g.setTransform(s, 0, 0, s, 0, 0);
+  scopePicture(g, false);
+  try { cv.toBlob(function (b) { done(b); }, 'image/png'); } catch (e) { done(null); }
+}
+// An SVG drawn into a bitmap, twice as fine as its nominal size.
+function svgToPNG(pic, done) {
+  const img = new Image(), s = 2;
+  img.onload = function () {
+    try {
+      const cv = document.createElement('canvas');
+      cv.width = pic.w * s; cv.height = pic.h * s;
+      cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+      cv.toBlob(function (b) { done(b); }, 'image/png');
+    } catch (e) { done(null); }
+  };
+  img.onerror = function () { done(null); };
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(pic.text);
+}
+
+/* ---- trace data ---- */
+
+// The traces of the current view as a table. With a parameter sweep every run follows the one before, marked by a first
+// column with the swept value: runs have their own time points, so they cannot share rows.
+function tracesCSV(sep) {
+  const v = viewOf(), dec = sep === ';' ? ',' : '.';
+  const cell = function (s) { s = String(s); return /["\n\r]/.test(s) || s.indexOf(sep) >= 0 ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  const num = function (q) { if (q == null || !isFinite(q)) return ''; const t = String(+(+q).toPrecision(9)); return dec === ',' ? t.replace('.', ',') : t; };
+  const many = runs.length > 1 && sweepInfo;
+  const lines = [];
+  let head = null, count = 0;
+  runs.forEach(function (r, k) {
+    if (!r.traces) return;
+    const res = v === 'bode' ? r.ac : v === 'dc' ? r.dc : r.sim;
+    if (!res || !res.ok) return;
+    const trs = r.traces.filter(function (t) { return !t.hidden && (v === 'bode' ? t.bode : v === 'dc' ? t.d : t.y); });
+    if (!trs.length) return;
+    let xs, cols = [], names = [];
+    if (v === 'bode') {
+      xs = res.f; names.push('frequency [Hz]');
+      trs.forEach(function (t) { names.push(t.label + ' gain [dB]', t.label + ' phase [deg]'); cols.push(t.bode.db, t.bode.ph); });
+    } else if (v === 'fft') {
+      const S = specData(r), first = S.list.get(trs[0].i);
+      xs = first.f; names.push('frequency [Hz]');
+      trs.forEach(function (t) { names.push(t.label + ' amplitude [' + t.unit + ' peak]'); cols.push(S.list.get(t.i).amp); });
+    } else if (v === 'dc') {
+      xs = res.t; names.push(res.src.replace(/^X/, '') + ' [' + (res.srcType === 'I' ? 'A' : 'V') + ']');
+      trs.forEach(function (t) { names.push((t.dlabel || t.label) + ' [' + (t.dunit || t.unit) + ']'); cols.push(t.d); });
+    } else {
+      xs = res.t; names.push('time [s]');
+      trs.forEach(function (t) { names.push(t.label + ' [' + t.unit + ']'); cols.push(t.y); });
+    }
+    if (many) names.unshift(sweepInfo.part.name + ' ' + sweepInfo.label + (sweepInfo.unit ? ' [' + sweepInfo.unit + ']' : ''));
+    if (!head) { head = names; lines.push(names.map(cell).join(sep)); }
+    const lead = many ? num(sweepInfo.vals[k]) + sep : '';
+    for (let j = 0; j < xs.length; j++) {
+      let row = lead + num(xs[j]);
+      for (let c = 0; c < cols.length; c++) row += sep + num(cols[c][j]);
+      lines.push(row);
+    }
+    count += xs.length;
+  });
+  if (!head) return null;
+  return { text: lines.join('\n') + '\n', rows: count, cols: head.length };
+}
+
+/* ---- the export dialog ---- */
+
+const EXP_HELP = {
+  spice: 'Standard SPICE syntax, written for ngspice and LTspice. The lines starting with <code>*@</code> are comments that store the drawing, so this lab can restore the schematic exactly.',
+  sch: 'The schematic as drawn, with part names, values and probe tags, in the colours of the theme in use.',
+  scope: 'The scope view as it is set now, with a title and a legend. Cursors are included when they are on.',
+  csv: 'The traces of the current scope view as a table, one row per point: every point of the run, not only the part on screen.'
+};
+let expKind = 'spice', expPic = null;
+function expRefresh() {
+  const k = expKind, pic = k === 'sch' || k === 'scope', png = pic && $('expFmt').value === 'png';
+  document.querySelectorAll('#expKind .tab').forEach(function (b) { const on = b.dataset.kind === k; b.classList.toggle('on', on); b.setAttribute('aria-selected', on ? 'true' : 'false'); });
+  $('expHelp').innerHTML = EXP_HELP[k];
+  $('expText').hidden = pic; $('expPrev').hidden = !pic;
+  $('expLayoutL').hidden = k !== 'spice'; $('expFmtL').hidden = !pic; $('expSepL').hidden = k !== 'csv';
+  $('expCopy').hidden = png;
+  $('expNote').textContent = '';
+  $('expSave').disabled = false; $('expCopy').disabled = false;
+  expPic = null;
+  const none = function (msg) { $('expSave').disabled = true; $('expCopy').disabled = true; if (pic) $('expPrev').innerHTML = '<p>' + esc(msg) + '</p>'; else $('expText').value = msg; };
+  if (k === 'spice') $('expText').value = exportText();
+  else if (k === 'csv') {
+    const c = tracesCSV($('expSep').value);
+    if (!c) none('There is nothing to write yet: run the circuit with at least one probe in view.');
+    else { $('expText').value = c.text; $('expNote').textContent = c.rows + ' rows, ' + c.cols + ' columns.'; }
+  } else {
+    expPic = k === 'sch' ? schematicSVG() : scopeSVG();
+    if (!expPic) none('The sheet is empty.');
+    else {
+      $('expPrev').innerHTML = expPic.text.replace(/^<\?xml[^>]*\?>\s*/, '');
+      $('expNote').textContent = png ? (expPic.w * 2) + ' \u00d7 ' + (expPic.h * 2) + ' pixels.' : '';
+    }
+  }
+  if (!pic) { $('expText').scrollTop = 0; $('expText').setSelectionRange(0, 0); }
+}
+$('btnExport').addEventListener('click', function () { $('dlgExport').showModal(); expRefresh(); });
+$('expKind').addEventListener('click', function (e) { const b = e.target.closest('.tab'); if (b) { expKind = b.dataset.kind; expRefresh(); } });
+$('expLayout').addEventListener('change', expRefresh);
+$('expFmt').addEventListener('change', expRefresh);
+$('expSep').addEventListener('change', expRefresh);
 $('expClose').addEventListener('click', function () { $('dlgExport').close(); });
-$('expSave').addEventListener('click', function () { saveFile($('expText').value); });
-$('expCopy').addEventListener('click', function () {
-  const ta = $('expText'), note = $('expNote');
-  const fallback = function () { ta.focus(); ta.select(); note.textContent = 'Text selected. Press Ctrl+C to copy.'; };
-  try { navigator.clipboard.writeText(ta.value).then(function () { note.textContent = 'Copied.'; }, fallback); } catch (e) { fallback(); }
+$('expSave').addEventListener('click', function () {
+  const k = expKind, note = $('expNote');
+  if (k === 'spice') {
+    if (downloads) saveAs(slug() + '.cir.txt', $('expText').value, 'text/plain', 'Saved. Rename to .cir if your simulator wants it.');
+    else saveAs(slug() + '.cir', $('expText').value, 'text/plain');
+    return;
+  }
+  if (k === 'csv') { saveAs(slug() + '_' + viewOf() + '.csv', $('expText').value, 'text/csv'); return; }
+  if (!expPic) return;
+  const base = slug() + (k === 'sch' ? '_schematic' : '_scope_' + viewOf());
+  if ($('expFmt').value === 'svg') { saveAs(base + '.svg', expPic.text, 'image/svg+xml'); return; }
+  const got = function (b) { if (b) saveAs(base + '.png', b, 'image/png'); else note.textContent = 'This browser could not make the bitmap. Save as SVG instead.'; };
+  if (k === 'scope') scopePNG(got); else svgToPNG(expPic, got);
 });
+$('expCopy').addEventListener('click', function () {
+  const note = $('expNote'), ta = $('expText'), pic = expKind === 'sch' || expKind === 'scope';
+  const text = pic ? (expPic ? expPic.text : '') : ta.value;
+  const fallback = function () { if (pic) note.textContent = 'Copying is not available in this view. Use Save file.'; else { ta.focus(); ta.select(); note.textContent = 'Text selected. Press Ctrl+C to copy.'; } };
+  try { navigator.clipboard.writeText(text).then(function () { note.textContent = pic ? 'SVG text copied.' : 'Copied.'; }, fallback); } catch (e) { fallback(); }
+});
+
+/* ---- circuits kept in the browser ---- */
+
+const LIB = DRAFT + '-lib';
+function libRead() {
+  try { const a = JSON.parse(localStorage.getItem(LIB) || '[]'); return Array.isArray(a) ? a.filter(function (x) { return x && typeof x.name === 'string' && x.sch && x.sch.parts; }) : []; } catch (e) { return []; }
+}
+function libWrite(a) { try { localStorage.setItem(LIB, JSON.stringify(a)); return true; } catch (e) { return false; } }
+function libRender(armed) {
+  const a = libRead(), ul = $('libList');
+  if (!a.length) { ul.innerHTML = '<li class="empty">Nothing saved yet.</li>'; return; }
+  ul.innerHTML = a.map(function (x, i) {
+    const n = x.sch.parts.filter(function (p) { return p.type !== 'GND' && p.type !== 'LBL'; }).length;
+    const when = x.saved ? new Date(x.saved) : null, date = when && !isNaN(when) ? when.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+    return '<li><span class="nm" title="' + esc(x.name) + '">' + esc(x.name) + '</span><span class="meta">' + n + (n === 1 ? ' part' : ' parts') + (date ? ' \u00b7 ' + esc(date) : '') + '</span>' +
+      '<button class="btn small" type="button" data-open="' + i + '">Open</button><button class="btn small" type="button" data-del="' + i + '">' + (armed === i ? 'Really delete?' : 'Delete') + '</button></li>';
+  }).join('');
+}
+function libOpen(i) {
+  const x = libRead()[i];
+  if (!x) return false;
+  loadSch(E.clone(x.sch), [], true);
+  return true;
+}
+$('btnLib').addEventListener('click', function () { $('libName').value = sch.title || ''; $('libNote').textContent = ''; libRender(-1); $('dlgLib').showModal(); $('libName').select(); });
+$('libClose').addEventListener('click', function () { $('dlgLib').close(); });
+$('libForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const name = $('libName').value.trim().slice(0, 60), note = $('libNote');
+  if (!name) { note.textContent = 'Give the circuit a name first.'; return; }
+  const a = libRead(), at = a.findIndex(function (x) { return x.name.toLowerCase() === name.toLowerCase(); });
+  const entry = { name: name, saved: new Date().toISOString(), sch: E.clone(sch) };
+  if (at >= 0) a[at] = entry; else a.unshift(entry);
+  if (!libWrite(a)) { note.textContent = 'The browser would not store it: its storage is full or switched off. Export the netlist instead.'; return; }
+  note.textContent = at >= 0 ? 'Replaced "' + name + '" with the circuit on the sheet.' : 'Saved as "' + name + '".';
+  libRender(-1); fillExamples();
+});
+$('libList').addEventListener('click', function (e) {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.dataset.open != null) {
+    const i = +b.dataset.open, x = libRead()[i];
+    if (libOpen(i)) { $('dlgLib').close(); $('exSel').value = 's' + i; toast('Opened "' + x.name + '". Undo brings the previous circuit back.'); }
+    return;
+  }
+  const i = +b.dataset.del;
+  if (b.textContent !== 'Really delete?') { libRender(i); return; }
+  const a = libRead(), gone = a.splice(i, 1)[0];
+  libWrite(a);
+  $('libNote').textContent = gone ? 'Deleted "' + gone.name + '".' : '';
+  libRender(-1); fillExamples();
+});
+// the Example list: circuits kept in this browser first, then the built-in examples by group
+function fillExamples() {
+  const selEl = $('exSel'), was = selEl.value;
+  let h = '<option value="">Choose\u2026</option>', group = null;
+  const mine = libRead();
+  if (mine.length) h += '<optgroup label="Saved in this browser">' + mine.map(function (x, i) { return '<option value="s' + i + '">' + esc(x.name) + '</option>'; }).join('') + '</optgroup>';
+  EXAMPLES.forEach(function (x, i) {
+    if (x.group !== group) { if (group !== null) h += '</optgroup>'; group = x.group; h += '<optgroup label="' + esc(group || 'Examples') + '">'; }
+    h += '<option value="' + i + '">' + esc(x.title) + '</option>';
+  });
+  if (group !== null) h += '</optgroup>';
+  selEl.innerHTML = h;
+  selEl.value = /^s/.test(was) ? '' : was;
+}
 // files are read as bytes: LTspice saves its schematics as UTF-16 or Windows-1252, netlists are usually UTF-8
 function readFile(f, done) {
   const rd = new FileReader();
@@ -6249,17 +6653,10 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(onResize);
 
 (function start() {
   const selEl = $('exSel');
-  (function () {
-    let h = '<option value="">Choose\u2026</option>', group = null;
-    EXAMPLES.forEach(function (x, i) {
-      if (x.group !== group) { if (group !== null) h += '</optgroup>'; group = x.group; h += '<optgroup label="' + esc(group || 'Examples') + '">'; }
-      h += '<option value="' + i + '">' + esc(x.title) + '</option>';
-    });
-    if (group !== null) h += '</optgroup>';
-    selEl.innerHTML = h;
-  })();
+  fillExamples();
   selEl.addEventListener('change', function () {
     if (this.value === '') return;
+    if (/^s/.test(this.value)) { const keep = this.value; if (libOpen(+this.value.slice(1))) this.value = keep; return; }
     importText(EXAMPLES[+this.value].text, true);
     notes = [];
     renderInsp();
